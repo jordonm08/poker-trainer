@@ -95,9 +95,9 @@ class Scenario:
         actions = [Action.FOLD]
 
         if self.current_bet == 0:
-            # No bet to call, can check or bet
+            # No bet to call, can check or raise (open)
             actions.append(Action.CHECK)
-            actions.append(Action.BET)
+            actions.append(Action.RAISE)  # Opening is called a "raise" in poker
         else:
             # There's a bet, can call or raise
             actions.append(Action.CALL)

@@ -36,15 +36,23 @@ def get_beginner_scenarios() -> List[Scenario]:
     s2.tags = ["preflop", "trash", "position"]
     scenarios.append(s2)
 
-    # Scenario 3: Medium suited connector on button
+    # Scenario 3: Medium suited connector on button - everyone folded
     s3 = create_simple_scenario(
         hero_position=Position.BTN,
         hero_cards_str="9h 8h",
         pot_size=1.5,
         current_bet=0.0,
-        description="You have 9-8 suited on the button.",
+        description="You have 9-8 suited on the button. Everyone folded to you.",
     )
-    s3.name = "Suited Connector Button"
+    s3.name = "Suited Connector Button (Unopened)"
+    s3.action_history = [
+        PlayerAction(Position.UTG, Action.FOLD),
+        PlayerAction(Position.UTG1, Action.FOLD),
+        PlayerAction(Position.UTG2, Action.FOLD),
+        PlayerAction(Position.MP, Action.FOLD),
+        PlayerAction(Position.MP1, Action.FOLD),
+        PlayerAction(Position.CO, Action.FOLD),
+    ]
     s3.difficulty = "beginner"
     s3.tags = ["preflop", "suited_connector", "position"]
     scenarios.append(s3)
@@ -65,18 +73,41 @@ def get_beginner_scenarios() -> List[Scenario]:
     s4.tags = ["preflop", "facing_raise", "premium"]
     scenarios.append(s4)
 
-    # Scenario 5: Small pocket pair in middle position
+    # Scenario 5: Small pocket pair in middle position - unopened
     s5 = create_simple_scenario(
         hero_position=Position.MP,
         hero_cards_str="6d 6c",
         pot_size=1.5,
         current_bet=0.0,
-        description="You have pocket sixes in middle position.",
+        description="You have pocket sixes in middle position. Everyone folded to you.",
     )
-    s5.name = "Small Pocket Pair MP"
+    s5.name = "Small Pocket Pair MP (Unopened)"
+    s5.action_history = [
+        PlayerAction(Position.UTG, Action.FOLD),
+        PlayerAction(Position.UTG1, Action.FOLD),
+        PlayerAction(Position.UTG2, Action.FOLD),
+    ]
     s5.difficulty = "beginner"
     s5.tags = ["preflop", "pocket_pair", "position"]
     scenarios.append(s5)
+
+    # Scenario 6: Same hand but facing a raise - totally different!
+    s6 = create_simple_scenario(
+        hero_position=Position.MP,
+        hero_cards_str="6d 6c",
+        pot_size=4.5,
+        current_bet=3.0,
+        description="You have pocket sixes in middle position. UTG raised to 3BB.",
+    )
+    s6.name = "Small Pocket Pair Facing Raise"
+    s6.action_history = [
+        PlayerAction(Position.UTG, Action.RAISE, 3.0),
+        PlayerAction(Position.UTG1, Action.FOLD),
+        PlayerAction(Position.UTG2, Action.FOLD),
+    ]
+    s6.difficulty = "beginner"
+    s6.tags = ["preflop", "pocket_pair", "facing_raise"]
+    scenarios.append(s6)
 
     return scenarios
 
@@ -115,18 +146,46 @@ def get_intermediate_scenarios() -> List[Scenario]:
     s2.tags = ["preflop", "facing_3bet", "pocket_pair"]
     scenarios.append(s2)
 
-    # Scenario 3: King-Queen offsuit in cutoff
+    # Scenario 3: King-Queen offsuit in cutoff - everyone folded
     s3 = create_simple_scenario(
         hero_position=Position.CO,
         hero_cards_str="Kc Qh",
         pot_size=1.5,
         current_bet=0.0,
-        description="You have KQ offsuit in the cutoff.",
+        description="You have KQ offsuit in the cutoff. Everyone folded to you.",
     )
-    s3.name = "KQ Offsuit CO"
+    s3.name = "KQ Offsuit CO (Unopened)"
+    s3.action_history = [
+        PlayerAction(Position.UTG, Action.FOLD),
+        PlayerAction(Position.UTG1, Action.FOLD),
+        PlayerAction(Position.UTG2, Action.FOLD),
+        PlayerAction(Position.MP, Action.FOLD),
+        PlayerAction(Position.MP1, Action.FOLD),
+    ]
     s3.difficulty = "intermediate"
     s3.tags = ["preflop", "broadway", "position"]
     scenarios.append(s3)
+
+    # Scenario 4: AQ facing raise and a call - multiway pot
+    s4 = create_simple_scenario(
+        hero_position=Position.BTN,
+        hero_cards_str="Ah Qc",
+        pot_size=7.5,
+        current_bet=3.0,
+        description="You have AQ offsuit on the button. MP raised to 3BB, CO called.",
+    )
+    s4.name = "AQ Multiway (Raise + Call)"
+    s4.action_history = [
+        PlayerAction(Position.UTG, Action.FOLD),
+        PlayerAction(Position.UTG1, Action.FOLD),
+        PlayerAction(Position.UTG2, Action.FOLD),
+        PlayerAction(Position.MP, Action.RAISE, 3.0),
+        PlayerAction(Position.MP1, Action.FOLD),
+        PlayerAction(Position.CO, Action.CALL),
+    ]
+    s4.difficulty = "intermediate"
+    s4.tags = ["preflop", "facing_raise", "multiway"]
+    scenarios.append(s4)
 
     return scenarios
 
