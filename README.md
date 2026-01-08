@@ -1,6 +1,6 @@
 # Poker Trainer
 
-A desktop application for training poker skills through scenario-based decision making, similar to chess.com's tactical trainers.
+Train your poker skills through scenario-based decision making, similar to chess.com's tactical trainers. Available as both a web app and command-line interface.
 
 ## Setup
 
@@ -10,8 +10,27 @@ pip install -r requirements.txt
 
 ## Run
 
+### Web Version (Recommended)
+Beautiful visual interface with poker table graphics:
+```bash
+./web.sh
+```
+Then open http://localhost:5000 in your browser.
+
+Or use the shortcut (after `source ~/.zshrc`):
+```bash
+poker-web
+```
+
+### Command-Line Version
+Simple text-based interface:
 ```bash
 python -m src.ui.app
+```
+
+Or use the shortcut:
+```bash
+poker
 ```
 
 ## Project Structure
