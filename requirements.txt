@@ -1,0 +1,6 @@
+# Core dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Future UI dependencies (when needed)
+# tkinter is included with Python standard library
