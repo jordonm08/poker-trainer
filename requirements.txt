@@ -2,5 +2,8 @@
 pytest>=7.4.0
 pytest-cov>=4.1.0
 
+# Web UI dependencies
+flask>=3.0.0
+
 # Future UI dependencies (when needed)
 # tkinter is included with Python standard library

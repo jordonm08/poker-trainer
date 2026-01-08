@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Trainer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎰 Poker Trainer</h1>
+            <p class="tagline">Train your poker skills with GTO-based scenarios</p>
+            <div class="stats" id="stats">
+                <span>Scenarios: <strong id="total">0</strong></span>
+                <span>Accuracy: <strong id="accuracy">0%</strong></span>
+            </div>
+        </header>
+
+        <div id="menu" class="menu">
+            <h2>Choose Difficulty</h2>
+            <button class="btn btn-primary" onclick="startPractice('beginner')">
+                Beginner (6 scenarios)
+            </button>
+            <button class="btn btn-primary" onclick="startPractice('intermediate')">
+                Intermediate (4 scenarios)
+            </button>
+        </div>
+
+        <div id="scenario-container" class="hidden">
+            <div class="scenario-header">
+                <h2 id="scenario-title"></h2>
+                <p id="scenario-progress"></p>
+            </div>
+
+            <div class="poker-table">
+                <div class="table-info">
+                    <div class="info-row">
+                        <span class="label">Position:</span>
+                        <span class="value" id="position"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Pot:</span>
+                        <span class="value" id="pot"></span>
+                    </div>
+                    <div class="info-row" id="bet-row" style="display: none;">
+                        <span class="label">To call:</span>
+                        <span class="value" id="bet-to-call"></span>
+                    </div>
+                </div>
+
+                <div class="cards-section">
+                    <div class="hand">
+                        <h3>Your Hand</h3>
+                        <div id="hero-cards" class="cards"></div>
+                    </div>
+                    <div id="board-section" class="board" style="display: none;">
+                        <h3>Board</h3>
+                        <div id="board-cards" class="cards"></div>
+                    </div>
+                </div>
+
+                <div class="action-history">
+                    <h3>Action before you:</h3>
+                    <div id="action-list"></div>
+                </div>
+            </div>
+
+            <div class="decision-section">
+                <h3>What do you do?</h3>
+                <div id="action-buttons" class="action-buttons"></div>
+            </div>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <div class="result-card">
+                <h2>Evaluation</h2>
+                <div class="grade-display">
+                    <div class="grade-label">Your move:</div>
+                    <div class="your-action" id="your-action"></div>
+
+                    <div class="grade-label">Grade:</div>
+                    <div class="grade" id="grade"></div>
+                    <div class="stars" id="stars"></div>
+
+                    <div class="grade-label" id="best-action-label" style="display: none;">Best move:</div>
+                    <div class="best-action" id="best-action"></div>
+                </div>
+
+                <div class="explanation" id="explanation"></div>
+
+                <button class="btn btn-next" onclick="nextScenario()">Next Scenario →</button>
+            </div>
+        </div>
+
+        <div id="complete-container" class="hidden">
+            <div class="result-card">
+                <h2>🎉 Practice Complete!</h2>
+                <div class="final-stats">
+                    <p>You completed all scenarios in this difficulty level.</p>
+                    <div class="stats-large">
+                        <div>Total scenarios: <strong id="final-total"></strong></div>
+                        <div>Overall accuracy: <strong id="final-accuracy"></strong></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="location.reload()">Back to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
