@@ -16,22 +16,31 @@ def get_beginner_scenarios() -> List[Scenario]:
         hero_cards_str="As Ah",
         pot_size=1.5,
         current_bet=0.0,
-        description="You have pocket aces on the button. No one has acted yet.",
+        description="You have pocket aces on the button. Everyone folded to you.",
     )
     s1.name = "Premium Pocket Aces"
+    s1.action_history = [
+        PlayerAction(Position.UTG, Action.FOLD),
+        PlayerAction(Position.UTG1, Action.FOLD),
+        PlayerAction(Position.UTG2, Action.FOLD),
+        PlayerAction(Position.MP, Action.FOLD),
+        PlayerAction(Position.MP1, Action.FOLD),
+        PlayerAction(Position.CO, Action.FOLD),
+    ]
     s1.difficulty = "beginner"
     s1.tags = ["preflop", "premium", "position"]
     scenarios.append(s1)
 
-    # Scenario 2: Weak hand in early position
+    # Scenario 2: Weak hand in early position - first to act
     s2 = create_simple_scenario(
         hero_position=Position.UTG,
         hero_cards_str="7h 2d",
         pot_size=1.5,
         current_bet=0.0,
-        description="You have 7-2 offsuit under the gun. No one has acted.",
+        description="You have 7-2 offsuit under the gun. You're first to act preflop.",
     )
     s2.name = "Weak Hand Early Position"
+    s2.action_history = []  # First to act, no prior action
     s2.difficulty = "beginner"
     s2.tags = ["preflop", "trash", "position"]
     scenarios.append(s2)

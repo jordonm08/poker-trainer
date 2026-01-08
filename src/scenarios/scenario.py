@@ -125,11 +125,13 @@ class Scenario:
         if self.current_bet > 0:
             lines.append(f"Bet to call: {self.current_bet}BB")
 
-        # Action history
-        if self.action_history:
-            lines.append("\nAction:")
+        # Action history - always show what happened before you
+        lines.append("\nAction before you:")
+        if self.action_history and len(self.action_history) > 0:
             for action in self.action_history:
                 lines.append(f"  {action}")
+        else:
+            lines.append(f"  (You are first to act)")
 
         return "\n".join(lines)
 
