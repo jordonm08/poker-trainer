@@ -1,6 +1,8 @@
 let currentDifficulty = null;
 let scenarios = [];
 let currentScenarioIndex = 0;
+let isAdaptiveMode = false;
+let currentGeneratedScenario = null;
 
 // Position explanations for beginners
 function getPositionHelp(positionAbbr) {
@@ -135,6 +137,12 @@ function showScenario(index) {
 }
 
 function makeDecision(action) {
+    // Check if in adaptive mode
+    if (isAdaptiveMode) {
+        makeAdaptiveDecision(action);
+        return;
+    }
+
     fetch('/api/evaluate', {
         method: 'POST',
         headers: {
@@ -187,7 +195,11 @@ function showResult(result) {
 }
 
 function nextScenario() {
-    showScenario(currentScenarioIndex + 1);
+    if (isAdaptiveMode) {
+        loadAdaptiveScenario();
+    } else {
+        showScenario(currentScenarioIndex + 1);
+    }
 }
 
 function showComplete() {
@@ -201,4 +213,189 @@ function showComplete() {
             document.getElementById('final-total').textContent = data.total;
             document.getElementById('final-accuracy').textContent = data.accuracy + '%';
         });
+}
+
+// ===== ADAPTIVE MODE FUNCTIONS =====
+
+function startAdaptive() {
+    isAdaptiveMode = true;
+    currentDifficulty = null;
+    scenarios = [];
+    currentScenarioIndex = 0;
+
+    // Reset stats for new adaptive session
+    fetch('/api/reset-stats', {method: 'POST'})
+        .then(() => {
+            document.getElementById('menu').classList.add('hidden');
+            loadAdaptiveScenario();
+        });
+}
+
+function loadAdaptiveScenario() {
+    fetch('/api/adaptive-scenario')
+        .then(res => res.json())
+        .then(scenario => {
+            currentGeneratedScenario = scenario;
+            showGeneratedScenario(scenario);
+        });
+}
+
+function showGeneratedScenario(scenario) {
+    // Show scenario container
+    document.getElementById('scenario-container').classList.remove('hidden');
+    document.getElementById('result-container').classList.add('hidden');
+
+    // Update header with difficulty info
+    document.getElementById('scenario-title').textContent = scenario.name;
+
+    let progressText = `Endless Mode - Current Difficulty: ${scenario.difficulty.toUpperCase()}`;
+    if (scenario.adaptive_stats && scenario.adaptive_stats.total_scenarios > 0) {
+        progressText += ` | Scenarios: ${scenario.adaptive_stats.total_scenarios}`;
+        if (scenario.adaptive_stats.avg_score) {
+            progressText += ` | Avg Score: ${scenario.adaptive_stats.avg_score}/5`;
+        }
+    }
+    document.getElementById('scenario-progress').textContent = progressText;
+
+    // Update table info
+    document.getElementById('position').textContent = scenario.position_full;
+
+    // Add position explanation
+    const positionHelp = getPositionHelp(scenario.position);
+    document.getElementById('position-help').textContent = positionHelp;
+
+    document.getElementById('pot').textContent = scenario.pot + ' BB';
+
+    if (scenario.current_bet > 0) {
+        document.getElementById('bet-row').style.display = 'flex';
+        document.getElementById('bet-to-call').textContent = scenario.current_bet + ' BB';
+    } else {
+        document.getElementById('bet-row').style.display = 'none';
+    }
+
+    // Show cards
+    const heroCards = document.getElementById('hero-cards');
+    heroCards.innerHTML = '';
+    scenario.cards.forEach(card => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card';
+        cardEl.textContent = card;
+        heroCards.appendChild(cardEl);
+    });
+
+    // Show board if exists
+    if (scenario.board && scenario.board.length > 0) {
+        document.getElementById('board-section').style.display = 'block';
+        const boardCards = document.getElementById('board-cards');
+        boardCards.innerHTML = '';
+        scenario.board.forEach(card => {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card';
+            cardEl.textContent = card;
+            boardCards.appendChild(cardEl);
+        });
+    } else {
+        document.getElementById('board-section').style.display = 'none';
+    }
+
+    // Show action history
+    const actionList = document.getElementById('action-list');
+    actionList.innerHTML = '';
+
+    if (scenario.action_history && scenario.action_history.length > 0) {
+        scenario.action_history.forEach(action => {
+            const actionEl = document.createElement('div');
+            actionEl.className = 'action-item';
+            let text = `${action.position} ${action.action}`;
+            if (action.amount) {
+                text += ` ${action.amount}BB`;
+            }
+            actionEl.textContent = text;
+            actionList.appendChild(actionEl);
+        });
+    } else {
+        const actionEl = document.createElement('div');
+        actionEl.className = 'action-item';
+        actionEl.textContent = '(You are first to act)';
+        actionEl.style.fontStyle = 'italic';
+        actionList.appendChild(actionEl);
+    }
+
+    // Show action buttons
+    const actionButtons = document.getElementById('action-buttons');
+    actionButtons.innerHTML = '';
+
+    console.log('Available actions:', scenario.available_actions);
+    console.log('Is adaptive mode:', isAdaptiveMode);
+
+    scenario.available_actions.forEach(action => {
+        const btn = document.createElement('button');
+        btn.className = 'action-btn';
+        btn.textContent = action.charAt(0).toUpperCase() + action.slice(1);
+        btn.onclick = () => {
+            console.log('Button clicked, action:', action, 'adaptive mode:', isAdaptiveMode);
+            makeDecision(action);
+        };
+        actionButtons.appendChild(btn);
+    });
+}
+
+function makeAdaptiveDecision(action) {
+    fetch('/api/evaluate-generated', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            action: action,
+            adaptive: true
+        })
+    })
+    .then(res => res.json())
+    .then(result => {
+        showAdaptiveResult(result);
+        loadStats();
+    });
+}
+
+function showAdaptiveResult(result) {
+    // Hide scenario, show result
+    document.getElementById('scenario-container').classList.add('hidden');
+    document.getElementById('result-container').classList.remove('hidden');
+
+    // Show your action
+    document.getElementById('your-action').textContent = result.chosen_action.toUpperCase();
+
+    // Show grade
+    const gradeEl = document.getElementById('grade');
+    gradeEl.textContent = result.grade;
+    gradeEl.className = 'grade ' + result.grade.toLowerCase();
+
+    // Show stars
+    const starsEl = document.getElementById('stars');
+    const starCount = result.grade_value;
+    const maxStars = 5;
+    starsEl.textContent = '★'.repeat(starCount) + '☆'.repeat(maxStars - starCount);
+
+    // Show best action if different
+    if (result.chosen_action !== result.best_action) {
+        document.getElementById('best-action-label').style.display = 'block';
+        document.getElementById('best-action').style.display = 'block';
+        document.getElementById('best-action').textContent = result.best_action.toUpperCase();
+    } else {
+        document.getElementById('best-action-label').style.display = 'none';
+        document.getElementById('best-action').style.display = 'none';
+    }
+
+    // Show explanation with adaptive stats if available
+    let explanationText = result.explanation;
+
+    if (result.adaptive_stats) {
+        const stats = result.adaptive_stats;
+        explanationText += `\n\n📊 Performance: ${stats.total_scenarios} scenarios | `;
+        explanationText += `Avg Score: ${stats.avg_score}/5 | `;
+        explanationText += `Difficulty: ${stats.difficulty.toUpperCase()}`;
+    }
+
+    document.getElementById('explanation').textContent = explanationText;
 }

@@ -18,13 +18,30 @@
         </header>
 
         <div id="menu" class="menu">
-            <h2>Choose Difficulty</h2>
-            <button class="btn btn-primary" onclick="startPractice('beginner')">
-                Beginner (6 scenarios)
-            </button>
-            <button class="btn btn-primary" onclick="startPractice('intermediate')">
-                Intermediate (4 scenarios)
-            </button>
+            <h2>Choose Mode</h2>
+
+            <div class="mode-section">
+                <h3>Practice Mode (Fixed Scenarios)</h3>
+                <button class="btn btn-primary" onclick="startPractice('beginner')">
+                    Beginner (6 scenarios)
+                </button>
+                <button class="btn btn-primary" onclick="startPractice('intermediate')">
+                    Intermediate (4 scenarios)
+                </button>
+            </div>
+
+            <div class="mode-section adaptive-mode">
+                <h3>🎯 Endless Mode (Adaptive Difficulty)</h3>
+                <p class="mode-desc">Unlimited randomly generated scenarios that get harder as you improve!</p>
+                <button class="btn btn-adaptive" onclick="startAdaptive()">
+                    Start Endless Mode
+                </button>
+                <div class="adaptive-info">
+                    <p>✓ Infinite scenario combinations</p>
+                    <p>✓ Automatically adjusts to your skill level</p>
+                    <p>✓ Never run out of practice hands</p>
+                </div>
+            </div>
 
             <div class="position-guide">
                 <h3>6-Max Table Positions</h3>

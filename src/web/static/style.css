@@ -153,6 +153,64 @@ h1 {
     box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
 }
 
+.btn-adaptive {
+    background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+    color: white;
+    margin: 10px;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.4);
+}
+
+.btn-adaptive:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.5);
+}
+
+.adaptive-mode {
+    margin-top: 40px;
+    padding: 30px;
+    background: rgba(167, 139, 250, 0.1);
+    border-radius: 15px;
+    border: 2px solid rgba(167, 139, 250, 0.3);
+}
+
+.adaptive-mode h3 {
+    color: #a78bfa;
+    font-size: 1.5em;
+}
+
+.mode-desc {
+    color: #e5e7eb;
+    font-size: 1.1em;
+    margin: 15px 0;
+}
+
+.adaptive-info {
+    margin-top: 20px;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.adaptive-info p {
+    padding: 8px 0;
+    color: #d1d5db;
+    font-size: 1.05em;
+}
+
+.mode-section {
+    margin-bottom: 20px;
+}
+
 .hidden {
     display: none !important;
 }
