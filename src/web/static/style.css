@@ -63,6 +63,60 @@ h1 {
     font-size: 2em;
 }
 
+.position-guide {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.position-guide h3 {
+    color: #a8dabc;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+.position-chart {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.pos-item {
+    padding: 12px;
+    margin: 8px 0;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.pos-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-left-color: #4ade80;
+}
+
+.pos-item.highlight {
+    border-left-color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.pos-item strong {
+    color: #4ade80;
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+
+.tip {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(96, 165, 250, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid #60a5fa;
+    color: #e5e7eb;
+    font-size: 1.05em;
+}
+
 .btn {
     padding: 15px 40px;
     font-size: 1.1em;
@@ -145,6 +199,15 @@ h1 {
 .value {
     font-weight: 700;
     font-size: 1.1em;
+}
+
+.position-help {
+    display: block;
+    font-size: 0.85em;
+    font-weight: 400;
+    color: #a8dabc;
+    font-style: italic;
+    margin-top: 5px;
 }
 
 .cards-section {

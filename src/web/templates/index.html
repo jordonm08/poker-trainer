@@ -25,6 +25,31 @@
             <button class="btn btn-primary" onclick="startPractice('intermediate')">
                 Intermediate (4 scenarios)
             </button>
+
+            <div class="position-guide">
+                <h3>6-Max Table Positions</h3>
+                <div class="position-chart">
+                    <div class="pos-item">
+                        <strong>UTG</strong> - Under the Gun (first to act)
+                    </div>
+                    <div class="pos-item">
+                        <strong>MP</strong> - Middle Position
+                    </div>
+                    <div class="pos-item">
+                        <strong>CO</strong> - Cutoff (good position)
+                    </div>
+                    <div class="pos-item highlight">
+                        <strong>BTN</strong> - Button (best position!)
+                    </div>
+                    <div class="pos-item">
+                        <strong>SB</strong> - Small Blind
+                    </div>
+                    <div class="pos-item">
+                        <strong>BB</strong> - Big Blind
+                    </div>
+                </div>
+                <p class="tip">💡 Later positions are better - you see what others do first!</p>
+            </div>
         </div>
 
         <div id="scenario-container" class="hidden">
@@ -44,7 +69,10 @@
                 <div class="table-info">
                     <div class="info-row">
                         <span class="label">Position:</span>
-                        <span class="value" id="position"></span>
+                        <span class="value">
+                            <span id="position"></span>
+                            <span class="position-help" id="position-help"></span>
+                        </span>
                     </div>
                     <div class="info-row">
                         <span class="label">Pot:</span>

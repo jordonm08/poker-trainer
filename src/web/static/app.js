@@ -2,6 +2,19 @@ let currentDifficulty = null;
 let scenarios = [];
 let currentScenarioIndex = 0;
 
+// Position explanations for beginners
+function getPositionHelp(positionAbbr) {
+    const explanations = {
+        'UTG': 'First to act - tightest range (play strong hands only)',
+        'MP': 'Middle Position - moderate range',
+        'CO': 'Cutoff (one before button) - wider range, good position',
+        'BTN': 'Button (dealer) - best position, widest range, act last',
+        'SB': 'Small Blind - bad position (act first post-flop)',
+        'BB': 'Big Blind - last to act pre-flop, then first post-flop'
+    };
+    return explanations[positionAbbr] || '';
+}
+
 // Load stats on page load
 loadStats();
 
@@ -47,6 +60,11 @@ function showScenario(index) {
 
     // Update table info
     document.getElementById('position').textContent = scenario.position_full;
+
+    // Add position explanation
+    const positionHelp = getPositionHelp(scenario.position);
+    document.getElementById('position-help').textContent = positionHelp;
+
     document.getElementById('pot').textContent = scenario.pot + ' BB';
 
     if (scenario.current_bet > 0) {
