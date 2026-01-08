@@ -180,9 +180,16 @@ h3 {
 }
 
 .action-history {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border-left: 4px solid #4ade80;
+}
+
+.action-history h3 {
+    color: #4ade80;
+    margin-bottom: 15px;
 }
 
 #action-list {
@@ -194,6 +201,7 @@ h3 {
 .action-item {
     padding: 5px 0;
     font-family: 'Courier New', monospace;
+    font-size: 1.05em;
 }
 
 .decision-section {
